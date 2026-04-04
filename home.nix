@@ -18,12 +18,13 @@ in
   home.stateVersion = "25.11";
   programs.git = { 
     enable = true; 
-    config = {
+    extraConfig = {
       user.name = "Lukinhasram"; 
       user.email = "lucas.ramos@arapiraca.ufal.br";
       init.defaultBranch = "main";
     };
   };
+  programs.ssh.enable = true;
   programs.bash = {
     enable = true;
     initExtra = ''
@@ -66,6 +67,7 @@ in
     lua-language-server
     yazi
     fzf
+    gh
     inputs.nixpkgs-unstable.legacyPackages.${pkgs.system}.zotero
   ];
 }
