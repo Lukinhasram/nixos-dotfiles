@@ -14,29 +14,44 @@
     noctalia = {
       url = "github:noctalia-dev/noctalia-shell";
       inputs.nixpkgs.follows = "nixpkgs";
-      inputs.quickshell.follows = "quickshell";
     };
   };
 
-  outputs = inputs@{ self, nixpkgs, home-manager, ... }: {
-    nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+  outputs = inputs@{ self, nixpkgs, nixpkgs-unstable, home-manager, ... }:
+    let
       system = "x86_64-linux";
+      overlay-unstable = final: prev: {
+        unstable = import nixpkgs-unstable {
+          inherit system;
+          config = prev.config;
+        };
+      };
+      pkgs = import nixpkgs {
+        inherit system;
+        overlays = [ overlay-unstable ];
+      };
+    in {
+      formatter.${system} = pkgs.nixpkgs-fmt;
 
-      specialArgs = { inherit inputs; };
+      nixosConfigurations.nixos = nixpkgs.lib.nixosSystem {
+        inherit system;
 
-      modules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
-        {
-          home-manager = {
-            useGlobalPkgs = true;
-            useUserPackages = true;
-            users.lucas = import ./home.nix;
-            backupFileExtension = "backup";
-            extraSpecialArgs = { inherit inputs; };
-          };
-        }
-      ];
+        specialArgs = { inherit inputs; };
+
+        modules = [
+          { nixpkgs.overlays = [ overlay-unstable ]; }
+          ./configuration.nix
+          home-manager.nixosModules.home-manager
+          {
+            home-manager = {
+              useGlobalPkgs = true;
+              useUserPackages = true;
+              users.lucas = import ./home.nix;
+              backupFileExtension = "backup";
+              extraSpecialArgs = { inherit inputs; };
+            };
+          }
+        ];
+      };
     };
-  };
 }
