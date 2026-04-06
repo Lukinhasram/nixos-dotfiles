@@ -14,7 +14,7 @@
   programs.bash = {
     enable = true;
     initExtra = ''
-      export PS1="\[\e[32m\][\u\[\e[35m\]@\[\e[32m\]\h\e[35m\]:\[\e[34m\]\w\[\e[32m\]]\[\e[1;35m\]\$\[\e[0m\] "
+      export PS1="\[\e[32m\][\u\[\e[35m\]@\[\e[32m\]\h\[\e[35m\]]:\[\e[34m\]\w\[\e[32m\]]\[\e[1;35m\]\$\[\e[0m\] "
     '';
     shellAliases = {
       btw = "echo I use nixos, btw";

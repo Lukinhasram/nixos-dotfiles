@@ -9,6 +9,8 @@ let
     niri = "niri";
     kitty = "kitty";
     yazi = "yazi";
+    fuzzel = "fuzzel";
+    vesktop = "vesktop";
   };
 in
 {

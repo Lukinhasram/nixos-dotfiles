@@ -17,7 +17,9 @@
     lua-language-server
     yazi
     fzf
-    gh
+    btop
     unstable.zotero
+    unstable.obsidian
+    unstable.vesktop
   ];
 }
